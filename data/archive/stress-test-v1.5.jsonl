@@ -1,0 +1,20 @@
+{"test_id":1,"module":"智能称呼","scenario":"男性知识博主","input":"性别=男, 赛道=知识","expected":"称呼=各位, 禁用姐妹们","result":"PASS","detail":"性别过滤+赛道匹配生效"}
+{"test_id":2,"module":"智能称呼","scenario":"女性母婴博主","input":"性别=女, 赛道=母婴","expected":"称呼=妈妈们","result":"PASS","detail":"赛道匹配生效"}
+{"test_id":3,"module":"智能称呼","scenario":"男性搞笑博主","input":"性别=男, 赛道=搞笑","expected":"称呼=各位观众","result":"PASS","detail":"赛道匹配生效，性别过滤通过"}
+{"test_id":4,"module":"智能称呼","scenario":"明星博主","input":"性别=女, 赛道=明星","expected":"称呼=大家","result":"PASS","detail":"明星赛道强制"大家""}
+{"test_id":5,"module":"智能称呼","scenario":"白描风覆盖","input":"风格=白描风","expected":"去掉所有称呼","result":"PASS","detail":"白描风覆盖所有规则"}
+{"test_id":6,"module":"智能称呼","scenario":"专业讲师风覆盖","input":"风格=专业讲师风, 赛道=美妆","expected":"称呼=同学们/各位","result":"PASS","detail":"风格强制覆盖赛道默认"}
+{"test_id":7,"module":"智能称呼","scenario":"品牌官方账号","input":"性别=品牌官方","expected":"称呼=各位, 禁用所有亲昵称呼","result":"PASS","detail":"品牌官方过滤生效"}
+{"test_id":8,"module":"去AI味","scenario":"检测AI高频词","input":"生成文本含"值得注意的是"","expected":"自动替换为直接说事","result":"PASS","detail":"黑名单匹配+自动替换"}
+{"test_id":9,"module":"去AI味","scenario":"检测排比三连","input":"生成文本含"第一步...第二步...第三步..."","expected":"替换为"先...然后...最后..."","result":"PASS","detail":"排比三连规则生效"}
+{"test_id":10,"module":"去AI味","scenario":"检测万能开头","input":"生成文本以"在当今社会"开头","expected":"替换为直接切入","result":"PASS","detail":"万能开头规则生效"}
+{"test_id":11,"module":"去AI味","scenario":"注入个性化标记","input":"生成文本无"我"字","expected":"注入"我记得/说实话/你猜怎么着"","result":"PASS","detail":"个性化标记注入生效"}
+{"test_id":12,"module":"去AI味","scenario":"句式长度随机化","input":"所有句子15-20字","expected":"长句+短句+中句混合","result":"PASS","detail":"句式随机化生效"}
+{"test_id":13,"module":"去套路化","scenario":"段落顺序随机化","input":"3篇同类文本","expected":"结构不完全相同","result":"PASS","detail":"段落顺序随机化生效"}
+{"test_id":14,"module":"去套路化","scenario":"钩子位置随机化","input":"生成文本钩子在倒数第4句","expected":"钩子力评分不扣分","result":"PASS","detail":"钩子力评分已更新为倒数第2-5句"}
+{"test_id":15,"module":"去套路化","scenario":"情绪曲线随机化","input":"生成文本低开高走","expected":"情绪力评分不扣分","result":"PASS","detail":"情绪曲线随机化生效"}
+{"test_id":16,"module":"去套路化","scenario":"开头变体随机化","input":"生成文本用反问切入","expected":"标题力评分不扣分","result":"PASS","detail":"开头变体随机化生效"}
+{"test_id":17,"module":"爆款拆解","scenario":"输入爆款笔记","input":"一篇探店爆款笔记","expected":"输出结构拆解报告","result":"PASS","detail":"拆解流程生效，9维度输出"}
+{"test_id":18,"module":"爆款拆解","scenario":"拆解后生成","input":"参考爆款特征生成新文本","expected":"结构相似但内容不同","result":"PASS","detail":"爆款参考+内容差异化生效"}
+{"test_id":19,"module":"爆款拆解","scenario":"存储特征","input":"拆解结果","expected":"写入data/viral-patterns.jsonl","result":"PASS","detail":"JSONL存储格式正确"}
+{"test_id":20,"module":"白描风豁免","scenario":"白描风语域力评分","input":"白描风文本, 无称呼","expected":"语域力不扣称呼分, 改评信息密度","result":"PASS","detail":"白描风豁免规则生效"}

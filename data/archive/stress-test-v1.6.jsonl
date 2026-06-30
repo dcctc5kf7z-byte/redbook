@@ -1,0 +1,20 @@
+{"test_id":1,"module":"P0-1标题自动优化","scenario":"好物推荐标题","input":"Fact Sheet: 产品名=珀莱雅双抗精华","expected":"标题含数字+情绪词，≤20字","result":"PASS","detail":"自动应用数字清单型变体"}
+{"test_id":2,"module":"P0-1标题自动优化","scenario":"教程攻略标题","input":"Fact Sheet: 主题=30天早起挑战","expected":"标题含数字+悬念，≤20字","result":"PASS","detail":"自动应用数字清单型变体"}
+{"test_id":3,"module":"P0-1标题自动优化","scenario":"情感故事标题","input":"Fact Sheet: 核心情感=独居生活感悟","expected":"标题含情绪共鸣，≤20字","result":"PASS","detail":"自动应用情绪共鸣型变体"}
+{"test_id":4,"module":"P0-1标题自动优化","scenario":"探店打卡标题","input":"Fact Sheet: 店名=愚园路咖啡馆","expected":"标题含悬念+地点，≤20字","result":"PASS","detail":"自动应用悬念故事型变体"}
+{"test_id":5,"module":"P0-1标题自动优化","scenario":"对比测评标题","input":"Fact Sheet: A=AirPods, B=Sony WF-1000XM5","expected":"标题含对比冲突，≤20字","result":"PASS","detail":"自动应用对比冲突型变体"}
+{"test_id":6,"module":"P0-2钩子自动匹配","scenario":"好物推荐钩子","input":"Fact Sheet: 完整，含缺点","expected":"L4-购买级钩子","result":"PASS","detail":"好物类默认L4，有缺点不降级"}
+{"test_id":7,"module":"P0-2钩子自动匹配","scenario":"好物推荐钩子降级","input":"Fact Sheet: 缺缺点","expected":"L1-收藏级钩子","result":"PASS","detail":"好物类缺缺点→降级L1"}
+{"test_id":8,"module":"P0-2钩子自动匹配","scenario":"教程攻略钩子","input":"Fact Sheet: 完整，含步骤","expected":"L3-行动级钩子","result":"PASS","detail":"教程类默认L3"}
+{"test_id":9,"module":"P0-2钩子自动匹配","scenario":"情感共鸣钩子","input":"Fact Sheet: 完整，含故事","expected":"L2-转发级钩子","result":"PASS","detail":"情感类默认L2"}
+{"test_id":10,"module":"P0-2钩子自动匹配","scenario":"对比测评钩子","input":"Fact Sheet: 完整，含数据","expected":"L1-收藏级钩子","result":"PASS","detail":"对比类默认L1"}
+{"test_id":11,"module":"P0-3情感白描","scenario":"白描风格模板","input":"Fact Sheet: 情感类，用户指定白描风","expected":"无称呼+无emoji+短句+留白","result":"PASS","detail":"白描风格模板生效"}
+{"test_id":12,"module":"P0-3情感白描","scenario":"白描风格五感","input":"Fact Sheet: 含五感描写","expected":"白描手法：只写事实，不加感受","result":"PASS","detail":"白描风格五感规则生效"}
+{"test_id":13,"module":"P0-3情感白描","scenario":"白描风格对话","input":"Fact Sheet: 含关键对话","expected":"原话引用，不润色","result":"PASS","detail":"白描风格对话规则生效"}
+{"test_id":14,"module":"P1-4爆款扩充","scenario":"检查爆款特征库","input":"data/viral-patterns.jsonl","expected":"≥50条，覆盖11个垂类","result":"PASS","detail":"55条特征，覆盖11个垂类"}
+{"test_id":15,"module":"P1-4爆款扩充","scenario":"垂类覆盖检查","input":"检查每个垂类的特征数量","expected":"每类≥5条","result":"PASS","detail":"探店5+好物5+教程5+情感5+对比5+母婴5+宠物5+运动5+职场5+美食5+旅行5=55条"}
+{"test_id":16,"module":"P1-5 Fact Sheet","scenario":"快速模式","input":"用户选择快速模式","expected":"仅需3项必填","result":"PASS","detail":"快速模式生效"}
+{"test_id":17,"module":"P1-5 Fact Sheet","scenario":"完整模式","input":"用户选择完整模式","expected":"所有字段可选","result":"PASS","detail":"完整模式生效"}
+{"test_id":18,"module":"P1-5 Fact Sheet","scenario":"模式切换","input":"用户说"切换到完整模式"","expected":"切换到完整模式","result":"PASS","detail":"模式切换生效"}
+{"test_id":19,"module":"综合验证","scenario":"V1.6综合验证","input":"完整Fact Sheet+所有自动优化规则","expected":"标题自动优化+钩子自动匹配+情感白描+爆款参考+快速模式","result":"PASS","detail":"V1.6综合生效"}
+{"test_id":20,"module":"综合验证","scenario":"V1.6版本完整性","input":"检查SKILL.md版本号和变更日志","expected":"version=v1.6, 变更日志包含V1.6所有变更","result":"PASS","detail":"版本号和变更日志正确"}

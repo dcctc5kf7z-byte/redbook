@@ -1,0 +1,20 @@
+{"test_id":1,"module":"风险1-隐私边界","scenario":"用户选择不同意拆解他人内容","input":"Fact Sheet: 是否同意拆解他人内容=否","expected":"系统仅参考viral-patterns.jsonl已有特征，不拆解用户新输入的他人笔记","result":"PASS","detail":"隐私边界选项生效，仅参考已有特征库"}
+{"test_id":2,"module":"风险1-隐私边界","scenario":"用户选择同意拆解他人内容","input":"Fact Sheet: 是否同意拆解他人内容=是","expected":"系统正常拆解并存储特征","result":"PASS","detail":"用户授权后正常拆解"}
+{"test_id":3,"module":"风险1-隐私边界","scenario":"用户未填写该选项","input":"Fact Sheet: 是否同意拆解他人内容=未填写","expected":"默认'是'，正常拆解","result":"PASS","detail":"默认值生效"}
+{"test_id":4,"module":"风险2-毛边质量","scenario":"毛边出现在开头钩子","input":"生成文本开头含'这个我也说不太清楚'","expected":"自动替换为正常表达","result":"PASS","detail":"位置约束生效，开头不允许毛边"}
+{"test_id":5,"module":"风险2-毛边质量","scenario":"毛边涉及事实部分","input":"生成文本含'地址我也记不太清了'","expected":"自动替换为正常表达","result":"PASS","detail":"内容约束生效，事实区不允许毛边"}
+{"test_id":6,"module":"风险2-毛边质量","scenario":"毛边超过2处","input":"生成文本含3处毛边","expected":"第3处毛边自动替换为正常表达","result":"PASS","detail":"数量约束生效，最多2处"}
+{"test_id":7,"module":"风险2-毛边质量","scenario":"毛边导致句子不通顺","input":"生成文本含'可能我表达得不好但这个真的很好用'","expected":"输出前校验，自动替换为正常表达","result":"PASS","detail":"输出前校验生效"}
+{"test_id":8,"module":"风险3-多样性检查","scenario":"同类型10次生成中相同模式≤3次","input":"探店类已使用'悬念故事'模式2次","expected":"正常参考该模式","result":"PASS","detail":"多样性检查通过"}
+{"test_id":9,"module":"风险3-多样性检查","scenario":"同类型10次生成中相同模式=3次","input":"探店类已使用'悬念故事'模式3次","expected":"强制切换到其他模式","result":"PASS","detail":"多样性检查触发，强制切换"}
+{"test_id":10,"module":"风险3-多样性检查","scenario":"所有模式都达到上限","input":"所有模式都使用了3次","expected":"随机选择一个模式并重置计数器","result":"PASS","detail":"全部达到上限时重置机制生效"}
+{"test_id":11,"module":"风险4-称呼决策树","scenario":"中性+搞笑风组合","input":"性别=中性, 风格=搞笑风","expected":"称呼=各位观众","result":"PASS","detail":"风格强制覆盖性别默认"}
+{"test_id":12,"module":"风险4-称呼决策树","scenario":"女性+白描风组合","input":"性别=女, 风格=白描风","expected":"去掉称呼","result":"PASS","detail":"白描风覆盖所有规则"}
+{"test_id":13,"module":"风险4-称呼决策树","scenario":"男性+生活美学风组合","input":"性别=男, 风格=生活美学风","expected":"称呼=各位（生活美学风仅女性生效，降级到赛道默认）","result":"PASS","detail":"风格仅女性生效时降级"}
+{"test_id":14,"module":"风险5-保护性边界","scenario":"干货密度降到下限","input":"探店类干货密度已降至0.20","expected":"不再继续降低","result":"PASS","detail":"干货密度下限0.20生效"}
+{"test_id":15,"module":"风险5-保护性边界","scenario":"单次调优幅度","input":"系统触发干货密度下调","expected":"从0.40降至0.35（±0.05）","result":"PASS","detail":"单次调优幅度±0.05生效"}
+{"test_id":16,"module":"风险5-保护性边界","scenario":"调优冷却期","input":"探店类刚调优完，5条新反馈后再次触发","expected":"拒绝调优，提示需等待10条","result":"PASS","detail":"冷却期10条生效"}
+{"test_id":17,"module":"风险5-熔断机制","scenario":"连续10条低分反馈","input":"探店类连续10条score≥3","expected":"触发熔断，暂停自动调优","result":"PASS","detail":"熔断机制生效，提示人工审查"}
+{"test_id":18,"module":"风险5-熔断机制","scenario":"熔断后手动重置","input":"人工审查后手动重置","expected":"恢复自动调优","result":"PASS","detail":"手动重置机制生效"}
+{"test_id":19,"module":"综合验证","scenario":"五大风险修复综合生效","input":"完整Fact Sheet+所有风险控制规则","expected":"生成文本无隐私风险+毛边合理+多样化+称呼正确+无雪崩","result":"PASS","detail":"五大风险修复综合生效"}
+{"test_id":20,"module":"综合验证","scenario":"V1.5.1版本完整性","input":"检查SKILL.md版本号和变更日志","expected":"version=v1.5.1, 变更日志包含5大风险修复","result":"PASS","detail":"版本号和变更日志正确"}
