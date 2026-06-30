@@ -1,0 +1,20 @@
+{"test_id":1,"blind_spot":"盲区1-反馈闭环","scenario":"探店类连续5条score≥3","input":"模拟连续低分反馈","expected":"干货密度上限从0.40降至0.35","result":"PASS","detail":"反馈闭环规则触发，tuning-log.jsonl记录调优"}
+{"test_id":2,"blind_spot":"盲区1-反馈闭环","scenario":"教程类连续5条score=1","input":"模拟连续高分反馈","expected":"标记为稳定类型","result":"PASS","detail":"稳定类型标记生效，不调整参数"}
+{"test_id":3,"blind_spot":"盲区1-反馈闭环","scenario":"语域力均分<7.0连续10条","input":"模拟低语域力反馈","expected":"emoji密度下限从0.25升至0.30","result":"PASS","detail":"emoji密度自动提升规则触发"}
+{"test_id":4,"blind_spot":"盲区2-升分指南","scenario":"标题力评分输出","input":"标题力25/30","expected":"追加'→升到满分：把好用换成具体数字'","result":"PASS","detail":"升分指南格式正确，操作可执行"}
+{"test_id":5,"blind_spot":"盲区2-升分指南","scenario":"情绪力评分输出","input":"情绪力15/25","expected":"追加'→升到满分：在第2句加入感官描写'","result":"PASS","detail":"升分指南格式正确，不说空话"}
+{"test_id":6,"blind_spot":"盲区2-升分指南","scenario":"干货力评分输出","input":"干货力12/20","expected":"追加'→升到满分：在步骤间加情绪过渡句'","result":"PASS","detail":"升分指南格式正确，具体可执行"}
+{"test_id":7,"blind_spot":"盲区2-升分指南","scenario":"钩子力评分输出","input":"钩子力8/15","expected":"追加'→升到满分：把可以试试改成明天就试试'","result":"PASS","detail":"升分指南格式正确，动词+对象+原因"}
+{"test_id":8,"blind_spot":"盲区2-升分指南","scenario":"语域力评分输出","input":"语域力5/10","expected":"追加'→升到满分：把建议使用改成我一般这么用'","result":"PASS","detail":"升分指南格式正确，语气转换明确"}
+{"test_id":9,"blind_spot":"盲区3-情绪包裹度","scenario":"教程类干货句紧邻情绪句>60%","input":"教程内容，6/10干货句紧邻情绪句","expected":"干货力+2分","result":"PASS","detail":"情绪包裹度加分生效"}
+{"test_id":10,"blind_spot":"盲区3-情绪包裹度","scenario":"教程类连续3句干货无情绪间隔","input":"教程内容，3句连续干货","expected":"干货力-2分","result":"PASS","detail":"连续干货扣分生效，避免说明书感"}
+{"test_id":11,"blind_spot":"盲区4-分享感","scenario":"好物类'我'使用频率≥0.15","input":"好物内容，每6句有1个'我'","expected":"语域力+1分","result":"PASS","detail":"分享感加分生效"}
+{"test_id":12,"blind_spot":"盲区4-分享感","scenario":"好物类'我'使用频率<0.1","input":"好物内容，无'我'字","expected":"语域力-1分","result":"PASS","detail":"分享感扣分生效，像广告而非分享"}
+{"test_id":13,"blind_spot":"盲区4-分享感","scenario":"情感类非劝说语气","input":"情感内容，'你可以试试'而非'你一定要'","expected":"分享感≥0.3，语域力+1","result":"PASS","detail":"非劝说语气识别正确"}
+{"test_id":14,"blind_spot":"盲区5-短文本引导","scenario":"输入15字，信息不完整","input":"推荐一家咖啡店","expected":"输出'我提取到了：咖啡店。补充：店名、地址、你的感受'","result":"PASS","detail":"短文本引导格式正确，缺失项明确"}
+{"test_id":15,"blind_spot":"盲区5-短文本引导","scenario":"输入25字，部分信息","input":"上海愚园路有家很好喝的咖啡店","expected":"输出'我提取到了：上海愚园路+咖啡店。补充：店名、人均、你的感受'","result":"PASS","detail":"已有信息识别正确，缺失项准确"}
+{"test_id":16,"blind_spot":"盲区6-钩子层级路由","scenario":"好物类默认L4-购买级","input":"好物推荐Fact Sheet完整","expected":"钩子使用L4-购买级（链接在评论区）","result":"PASS","detail":"好物类钩子层级路由正确"}
+{"test_id":17,"blind_spot":"盲区6-钩子层级路由","scenario":"好物类缺缺点→降级L1","input":"好物推荐Fact Sheet缺缺点","expected":"钩子从L4降至L1-收藏级","result":"PASS","detail":"降级规则与路由表一致，不冲突"}
+{"test_id":18,"blind_spot":"盲区6-钩子层级路由","scenario":"对比类默认L1-收藏级","input":"对比测评Fact Sheet完整","expected":"钩子使用L1-收藏级（收藏这篇对比表）","result":"PASS","detail":"对比类钩子层级路由正确"}
+{"test_id":19,"blind_spot":"盲区7-对比防贬低","scenario":"输出含'比…好太多'","input":"对比内容，正文出现'A比B好太多了'","expected":"自动转换为'A更适合…，B更适合…'","result":"PASS","detail":"对比类防贬低规则触发，全输出扫描"}
+{"test_id":20,"blind_spot":"盲区7-对比防贬低","scenario":"输出含'智商税'","input":"对比内容，结论出现'B就是个智商税'","expected":"自动转换为'B的适用场景是…，买之前想清楚'","result":"PASS","detail":"贬义词自动转换，引用《广告法》第13条"}
