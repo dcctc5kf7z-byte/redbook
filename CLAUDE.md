@@ -1,9 +1,9 @@
 # CLAUDE.md — 小红书爆款助手 · 项目导航
 
 > 最后更新：2026-06-30
-> **当前阶段**：v2.4 精简增强 — SKILL.md 1025→607 行（-41%）+ 情感类白描模式 + 人设路由 PRD V3.0
-> **上一阶段**：v2.3 全员评审（综合 7.4/10）+ 压力测试修复
-> **下一会话起点**：V3.0 人设路由系统 P0 实现 → git push（GitHub 恢复后）
+> **当前阶段**：v3.1.0 P1 多信号融合增强 — 5信号加权投票 + Fact Sheet人设字段 + 内容语域分析 + 路由透明化 + 准确率验证
+> **上一阶段**：v3.0.4 五维评审精修（保留型黑名单策略+标签映射替代+信息熵检测+合规审计日志+效果预览）
+> **下一会话起点**：Git push → V3.0 P2
 
 ---
 
@@ -15,7 +15,7 @@
 
 **核心差异化**：Fact Sheet 前置拦截（消灭幻觉） × 合规过滤器（《广告法》红线） × 五维评分 × 钩子自动注入
 
-**产品 System Prompt**：[SKILL.md](.claude/skills/redbook/SKILL.md)（v2.4，607行精简版，含智能默填 + 角色扮演去 AI 味 + 白描模式 + 仅红线合规）
+**产品 System Prompt**：[SKILL.md](.claude/skills/redbook/SKILL.md)（V3.0.4，含人设路由 + 30词黑名单 + 信息熵检测 + 合规审计日志 + 仅红线合规）
 
 ### 与 text-lens 的关系
 
@@ -34,12 +34,12 @@
 ```
 redbook/
 ├── CLAUDE.md                           # ← 你在这里
-├── HANDOFF.md                          # ★ 项目交接文档（V2.4 快照）
+├── HANDOFF.md                          # ★ 项目交接文档（V3.0.4 快照）
 ├── devlog/                             # 开发者日志
 │   ├── 2026-06-29.md                   # 首日日志
-│   └── 2026-06-30.md                   # V1.8→V2.4 全线迭代
+│   └── 2026-06-30.md                   # V1.8→V3.0.4 全线迭代
 ├── data/                               # 反馈数据（V2.0 治理后）
-│   ├── feedback-production.jsonl       # ★ 真实反馈（96条，schema_version 2.0）
+│   ├── feedback-production.jsonl       # ★ 真实反馈（108条，schema_version 2.2）
 │   ├── feedback-simulation.jsonl       # 模拟反馈（682条）
 │   ├── viral-patterns.jsonl            # 爆款特征（55条）
 │   ├── README.md                       # 数据文档
@@ -48,10 +48,15 @@ redbook/
 │   ├── persona-routing-prd-v3.md       # ★ V3.0 人设路由 PRD（8种人设）
 │   ├── competitor-analysis-2026-06-30.md # 竞品分析报告
 │   ├── expert-review-6.md              # 6 位专家汇总报告
+│   ├── v3-regression-tests.md          # V3.0 回归测试（25条）
+│   ├── v3.0.2-regression-tests.md      # V3.0.2 回归测试（31条）
+│   ├── v3.0.3-regression-tests.md      # V3.0.3 回归测试（37条）
+│   ├── v3.0.4-regression-tests.md      # V3.0.4 回归测试（42条）
+│   ├── v3.1-regression-tests.md        # ★ V3.1 回归测试（57条）
 │   ├── recruitment-post.md             # 朋友圈招募文案
 │   └── xiaohongshu-experience-post.md  # 小红书体验帖模板
-├── .claude/skills/redbook/             # ★ /redbook Skill（V2.4，607行）
-│   ├── SKILL.md                        # 入口（精简版：类型路由+评分+合规+懒加载）
+├── .claude/skills/redbook/             # ★ /redbook Skill（V3.1.0，多信号融合版）
+│   ├── SKILL.md                        # 入口（人设路由+评分+合规+懒加载）
 │   ├── iron-laws.md                    # 教练铁律（10 条）
 │   ├── hooks/                          # 钩子动作库（按类型拆分，懒加载）
 │   │   ├── goodthings.md               # 好物推荐类
@@ -60,7 +65,9 @@ redbook/
 │   │   ├── store.md                    # 探店打卡类
 │   │   └── compare.md                  # 对比测评类
 │   ├── titles.md                       # 封面标题模板（7 种变体）
-│   └── templates.md                    # 正文结构模板（四段式 + 5 种内容类型）
+│   ├── templates.md                    # 正文结构模板（四段式 + 5 种内容类型）
+│   └── reference/
+│       └── personas.md                 # ★ V3.0 新增 — 8种人设语域规范+路由规则
 └── .gitignore
 ```
 
@@ -93,31 +100,41 @@ redbook/
 | 项 | 状态 |
 |----|------|
 | **🎯 产品定位** | **✅ 独立产品线** — 从 text-lens 分离（路径 A），教练模式 |
-| **当前版本** | **V2.4** — SKILL.md 607行精简版（-41%），25/25 回归测试 PASS |
+| **当前版本** | **V3.1.0** — P1 多信号融合（5信号加权投票+Fact Sheet人设字段+语域分析+路由透明化） |
 | **全员评审** | **7.4/10** — PM 7.5 / DS 7.0 / Architect 7.0 / Legal 🟢 / QA 8.5 |
-| Skill 入口 | [SKILL.md](.claude/skills/redbook/SKILL.md)（V2.4，607行） |
+| Skill 入口 | [SKILL.md](.claude/skills/redbook/SKILL.md)（V3.1.0，多信号融合版） |
+| 人设规范 | **✅ V3.0 新增** — [reference/personas.md](.claude/skills/redbook/reference/personas.md)（8种人设语域规范） |
 | 标题模板 | **✅ 7 种变体** — 数字/悬念/对比/痛点/身份/场景/疑问 |
 | 钩子库 | **✅ 合规版** — 5 类拆分文件，hooks/ 已通过 Legal 扫描 |
-| 五维评分 | **✅ 精简版** — 合格/不合格两档 + 维度间交互 |
-| 语域校准 | **✅ 精简版** — 口语化判定 + 3行风格规则 + reference/styles.md |
-| 合规系统 | **✅ 5层** — 红线词 + 跨语言 + 食品功效 + 品牌推广 + 医疗暗示 |
-| 数据飞轮 | **✅ V2.0** — feedback-production(96) + feedback-simulation(682) + viral-patterns(55) |
+| 五维评分 | **✅ 人设化** — 语域力按 3 组标准评分（高互动/高专业/高审美） |
+| 语域校准 | **✅ 人设化** — 人设路由 + 口语化判定 + 分组标准 |
+| 合规系统 | **✅ V3.0.4** — 红线词30词 + 跨语言 + 食品功效 + 品牌推广 + 医疗暗示 + 三区域扫描 + 标签映射替代 + 合规审计日志 |
+| 数据飞轮 | **✅ V2.2** — feedback-production(108) + feedback-simulation(682) + viral-patterns(55) + routing-log + compliance-log |
 | 情感类增强 | **✅ V2.4** — 白描模式 + 钩子降级 L2→L1 |
-| 人设路由 PRD | **✅ 已输出** — [V3.0 PRD](docs/persona-routing-prd-v3.md)（8种人设） |
-| HANDOFF | **✅ V2.4** — [交接文档](HANDOFF.md) |
+| 人设路由 | **✅ V3.1 P0+P1** — [PRD](docs/persona-routing-prd-v3.md) + [规范](.claude/skills/redbook/reference/personas.md) |
+| HANDOFF | **✅ V3.1.0** — [交接文档](HANDOFF.md) |
+| 回归测试 | **✅ V3.1.0** — 57/57 PASS（100%），零功能损失 |
 | Git | **⚠️ 本地已提交** — 无 GitHub remote，需创建后 push |
-| 数据收集 | **⚠️ 96 条** — 目标 100+，register_metrics 覆盖率 0% |
+| 数据收集 | **✅ 108 条** — 96+12，register_metrics 覆盖率 100% |
+| 去AI味系统 | **✅ V3.0.4** — 30词黑名单（删除型/改写型/保留型三层策略）+ 角色扮演软约束 |
+| 路由系统 | **✅ V3.1.0** — 8种人设 + 5信号加权投票 + Fact Sheet人设字段 + 语域分析 + 路由透明化 + conflict_detected |
+| 快速模式 | **✅ V3.0.4** — 信息熵检测（A/B/C三级）+ 最低事实门槛 + 📌占位上限3个 |
 
-**下一会话起点**：V3.0 P0 人设路由系统实现 → git push → 数据收集 100+
+**下一会话起点**：Git push → V3.0 P2
 
 ---
 
 ## 版本
 
 ```yaml
-version: v2.4
+version: v3.1.0
 date: 2026-06-30
 changes:
+  - [V3.1.0] P1 多信号融合增强 — 路由从优先链升级为5信号加权投票 + Fact Sheet人设发现字段(3个) + 内容语域分析(8种人设) + 路由结果透明化 + 准确率验证框架
+  - [V3.0.4] 五维评审精修 — 保留型黑名单策略 + 标签映射替代 + 信息熵检测 + 合规审计日志 + lecturer效果预览
+  - [V3.0.3] 六维评审深度修复 — 黑名单扩充30词+上下文感知改写 + 结构化路由日志+主动写入 + 反馈schema 2.2 + 快速模式事实门槛 + 合规三区域扫描 + lecturer预警交互
+  - [V3.0.2] 六维评审修复 — 软硬约束双轨制 + 路由兜底+日志 + minimalist流量预警 + 信息完整性闸门 + 反馈上下文指纹 + 合规风险标签
+  - [V3.0] 人设路由系统 P0 — 8种人设语域规范 + 多信号融合路由 + 去AI味人设化 + 称呼人设化 + 语域力评分人设化
   - [V2.4] 精简增强 — SKILL.md 1025→607行(-41%) + 情感类白描模式 + 情感钩子降级 + 人设路由PRD V3.0
   - [V2.3] 压力测试修复 — 13 项问题修复（4 代理全方位审查）
   - [V2.2] 5 缺口修复 — 快速模式📌标注 + 深度优化价值 + 语域量化 + 合规提醒 + fast_to_coach

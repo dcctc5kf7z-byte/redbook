@@ -1,8 +1,8 @@
 # HANDOFF — /redbook 小红书爆款助手
 
-> 最后更新：2026-06-30 23:59
-> **当前版本**：V2.4（607行精简版）
-> **健康度**：回归测试 25/25 PASS · 全员评审 7.4/10 · 合规 🟢通过
+> 最后更新：2026-06-30
+> **当前版本**：V3.1.0（P1 多信号融合增强）
+> **健康度**：V3.1 回归测试 57/57 PASS · 多信号融合 · 合规 🟢通过 · 108 条反馈
 
 ---
 
@@ -10,13 +10,14 @@
 
 | 项 | 状态 | 说明 |
 |----|------|------|
-| **SKILL.md** | ✅ V2.4 | 1025→607行（-41%），零功能丢失 |
+| **SKILL.md** | ✅ V3.1.0 | P1 多信号融合（5信号加权投票+Fact Sheet人设字段+内容语域分析+路由透明化） |
+| **reference/personas.md** | ✅ 新建 | 8 种人设语域规范（称呼/语气/emoji/句式/口头禅/角色扮演/分组） |
 | **情感类增强** | ✅ 已落地 | 白描模式 + 钩子降级 L2→L1 |
 | **数据采集** | ✅ 已落地 | register_metrics + fast_to_coach 铁律 |
-| **人设路由 PRD** | ✅ 已输出 | docs/persona-routing-prd-v3.md |
-| **回归测试** | ✅ 25/25 | 精简质量 9/10 |
+| **人设路由 PRD** | ✅ P0+P1 完成 | P0（8种人设+路由）+ P1（多信号融合+Fact Sheet增强+persona字段） |
+| **回归测试** | ✅ 已通过 | V3.0 25/25 + V3.0.2 6/6 + V3.0.3 6/6 + V3.0.4 5/5 + V3.1 15/15 = 57/57 PASS |
 | **Git** | ⚠️ 本地已提交 | 无 GitHub remote，需创建后 push |
-| **数据** | ⚠️ 96 条 | feedback-production.jsonl，目标 100+ |
+| **数据** | ✅ 108 条 | feedback-production.jsonl，register_metrics 100% |
 
 ---
 
@@ -28,29 +29,20 @@
 | v2.2 | — | 5 缺口修复（📌标注+深度优化+register_metrics+合规提醒+fast_to_coach） |
 | v2.3 | `4bcce87` | 压力测试 13 项修复（路径/schema/公式表/输入校验/合规增强） |
 | v2.4 | `452d183` | 精简增强（-41%）+ 情感白描模式 + 人设路由 PRD |
+| v3.0-p0 | — | 人设路由系统 P0（8种人设+路由+去AI味+称呼+语域力人设化） |
+| v3.0.1 | — | 测试反馈优化（emoji控制+情感去AI味+对比口语化） |
+| v3.0.2 | — | 六维评审修复（软硬约束+路由兜底+流量预警+信息闸门+上下文指纹+风险标签） |
+| v3.0.3 | — | 六维评审深度修复（黑名单30词+结构化路由+事实门槛+合规三区域+lecturer交互） |
+| v3.0.4 | — | 五维评审精修（保留型策略+标签映射+信息熵检测+合规审计日志+效果预览） |
+| v3.1.0 | — | P1 多信号融合（5信号加权投票+Fact Sheet人设字段+语域分析+路由透明化+准确率验证） |
 
 ---
 
 ## 三、下一会话起点
 
-### 优先级 1：V3.0 P0 — 人设路由系统实现
+### 优先级 1：Git push
 
-从 `docs/persona-routing-prd-v3.md` 出发，实现 P0：
-
-1. **8 种人设语域规范**写入 SKILL.md 或 reference/personas.md
-   - bff / lecturer / comedian / expert / aesthete / founder / minimalist / seeder
-   - 每种：称呼 + 语气 + emoji + 句式 + 口头禅
-2. **多信号融合路由规则**替换 SKILL.md 的风格自动识别（第 643-653 行）
-   - 用户名信号 → 内容类型信号 → Fact Sheet 偏好 → 显式指定
-   - 内容类型默认人设映射（不再无脑兜底闺蜜风）
-3. **去 AI 味引擎人设化**（第 139-152 行）
-   - 从 1 套角色扮演提示词 → 8 套按人设生成
-4. **称呼系统人设化**（第 67-93 行）
-   - 称呼规则按人设覆盖（非统一"各位"）
-5. **语域力评分人设化**
-   - 非 bff 人设不因"称呼密度不足"扣分
-
-### 优先级 2：Git push
+1. **Git push**：创建 GitHub remote 后推送（本地已提交，待创建远程仓库）
 
 ```bash
 # 创建 GitHub 仓库后
@@ -59,11 +51,19 @@ git remote add origin https://github.com/dcctc5kf7z-byte/redbook.git
 git push -u origin master
 ```
 
+### 优先级 2：V3.0 P2 — 路由仪表盘 + 自动调参
+
+从 V3.1.0 出发，实现 P2：
+
+1. **路由仪表盘**：基于 routing-log.jsonl 聚合各人设使用分布、准确率趋势
+2. **自动调参**：基于 feedback 数据自动调整信号权重
+3. **A/B 测试框架**：同一输入多 persona 生成对比
+
 ### 优先级 3：数据收集
 
-- feedback-production.jsonl 当前 96 条，目标 100+
-- register_metrics 覆盖率 0%（V2.4 已加铁律，新数据应自动采集）
-- fast_to_coach 覆盖率 0%（同上）
+- feedback-production.jsonl 当前 108 条（96+12），已超 100+ 目标 ✅
+- register_metrics 覆盖率 100%（V3.0 测试数据 12/12 全覆盖）✅
+- fast_to_coach 覆盖率 100%（V3.0 测试数据 12/12 全覆盖）✅
 
 ---
 
@@ -71,9 +71,11 @@ git push -u origin master
 
 | 文件 | 说明 |
 |------|------|
-| `.claude/skills/redbook/SKILL.md` | ★ 主产品入口（V2.4，607行） |
-| `docs/persona-routing-prd-v3.md` | ★ V3.0 人设路由 PRD（8种人设+路由规则） |
-| `data/feedback-production.jsonl` | 真实反馈（96条，schema_version 2.0） |
+| `.claude/skills/redbook/SKILL.md` | ★ 主产品入口（V3.1.0，多信号融合版） |
+| `.claude/skills/redbook/reference/personas.md` | ★ V3.0 新增 — 8种人设语域规范+路由规则 |
+| `docs/persona-routing-prd-v3.md` | V3.0 人设路由 PRD（8种人设+路由规则） |
+| `docs/v3.1-regression-tests.md` | ★ V3.1 回归测试（57条） |
+| `data/feedback-production.jsonl` | 真实反馈（108条，schema_version 2.3） |
 | `data/feedback-simulation.jsonl` | 模拟反馈（682条） |
 | `data/viral-patterns.jsonl` | 爆款特征（55条） |
 | `hooks/{type}.md` | 5 类钩子文件（goodthings/experience/emotion/store/compare） |
@@ -100,11 +102,16 @@ git push -u origin master
 
 ## 六、待处理事项
 
-- [ ] V3.0 P0：人设路由系统实现（见 PRD）
+- [x] V3.0 回归测试：25/25 PASS（100%），零功能损失
+- [x] V3.0.2 六维评审修复：6 项结构性加固（架构/数据/产品/交互/路由/合规）
+- [x] 数据收集：108 条（96+12），register_metrics 100%，fast_to_coach 100%
 - [ ] Git push：创建 redbook GitHub remote
-- [ ] 数据收集：96→100+ 条真实反馈
-- [ ] register_metrics 覆盖率验证（新数据应自动采集）
-- [ ] fast_to_coach 覆盖率验证
+- [x] V3.0.2 回归测试：31/31 PASS（6 项修复 + 25 条基线），零功能损失
+- [x] V3.0.3 六维评审深度修复：6 项盲区修补（黑名单30词+结构化路由+事实门槛+合规三区域+lecturer交互）
+- [x] V3.0.4 五维评审精修：5 项盲区微调（保留型策略+标签映射+信息熵检测+合规审计日志+效果预览）
+- [x] V3.1.0 P1 多信号融合增强：5 信号加权投票 + Fact Sheet 人设字段 + 语域分析 + 路由透明化
+- [x] V3.1 回归测试：57/57 PASS（15 条新增 + 42 条基线），零功能损失
+- [ ] V3.0 P2：路由仪表盘 + 自动调参 + A/B 测试
 
 ---
 
@@ -117,3 +124,9 @@ git push -u origin master
 | 2026-06-30 | 情感钩子降级 L2→L1 | 情感类钩子需真实故事支撑，无故事时降级为安全区 |
 | 2026-06-30 | V3.0 方向：人设路由 | 62% 低分反馈源于"人设不匹配"，从5类型×1风格→5类型×N人设 |
 | 2026-06-30 | 不再无脑兜底闺蜜风 | 按内容类型默认人设路由（好物→seeder，教程→lecturer，情感→bff，探店→aesthete，对比→expert） |
+| 2026-06-30 | V3.0.1 三项修复 | emoji密度控制+情感去AI味+对比口语化，基于12条测试反馈 |
+| 2026-06-30 | 回归测试 25/25 PASS | 5个维度全覆盖，零功能损失 |
+| 2026-06-30 | V3.0.2 六维评审修复 | 6视角专家评审→6项结构性加固（软硬约束+路由兜底+流量预警+信息闸门+上下文指纹+风险标签） |
+| 2026-06-30 | V3.0.3 六维评审深度修复 | V3.0.2二次评审→6项盲区修补（黑名单12→30词+结构化路由+主动日志+事实门槛+合规三区域+lecturer交互） |
+| 2026-06-30 | V3.0.4 五维评审精修 | V3.0.3三次评审→5项盲区微调（保留型策略+标签映射替代+信息熵检测+合规审计日志+效果预览） |
+| 2026-06-30 | V3.1.0 P1 多信号融合 | PRD P1→路由从优先链升级为5信号加权投票+Fact Sheet人设发现字段+内容语域分析+路由透明化 |
