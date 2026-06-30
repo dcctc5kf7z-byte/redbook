@@ -15,7 +15,7 @@
 
 **核心差异化**：Fact Sheet 前置拦截（消灭幻觉） × 合规过滤器（《广告法》红线） × 五维评分 × 钩子自动注入
 
-**产品 System Prompt**：[SKILL.md](.claude/skills/redbook/SKILL.md)（v1.7，含智能默填 + 角色扮演去 AI 味 + 仅红线合规）
+**产品 System Prompt**：[SKILL.md](.claude/skills/redbook/SKILL.md)（v2.4，607行精简版，含智能默填 + 角色扮演去 AI 味 + 白描模式 + 仅红线合规）
 
 ### 与 text-lens 的关系
 
@@ -34,20 +34,24 @@
 ```
 redbook/
 ├── CLAUDE.md                           # ← 你在这里
+├── HANDOFF.md                          # ★ 项目交接文档（V2.4 快照）
 ├── devlog/                             # 开发者日志
-│   └── 2026-06-29.md                   # 首日日志
-├── data/                               # 反馈数据
-│   ├── feedback.jsonl                  # V1.5 模拟数据（20 条）
-│   ├── feedback-v1.1.jsonl             # V1.1 模拟数据（50 条）
-│   ├── feedback-real.jsonl             # ★ 真实用户反馈（收集中）
-│   └── README.md                       # 数据分析指引
-├── HANDOFF.md                          # ★ 项目交接文档（v1.7 快照）
+│   ├── 2026-06-29.md                   # 首日日志
+│   └── 2026-06-30.md                   # V1.8→V2.4 全线迭代
+├── data/                               # 反馈数据（V2.0 治理后）
+│   ├── feedback-production.jsonl       # ★ 真实反馈（96条，schema_version 2.0）
+│   ├── feedback-simulation.jsonl       # 模拟反馈（682条）
+│   ├── viral-patterns.jsonl            # 爆款特征（55条）
+│   ├── README.md                       # 数据文档
+│   └── archive/                        # 原始文件归档（9个）
 ├── docs/                               # 项目文档
+│   ├── persona-routing-prd-v3.md       # ★ V3.0 人设路由 PRD（8种人设）
+│   ├── competitor-analysis-2026-06-30.md # 竞品分析报告
 │   ├── expert-review-6.md              # 6 位专家汇总报告
 │   ├── recruitment-post.md             # 朋友圈招募文案
 │   └── xiaohongshu-experience-post.md  # 小红书体验帖模板
-├── .claude/skills/redbook/             # ★ /redbook Skill（v1.7）
-│   ├── SKILL.md                        # 入口（Fact Sheet + 类型路由 + 评分 + 合规过滤 + 懒加载）
+├── .claude/skills/redbook/             # ★ /redbook Skill（V2.4，607行）
+│   ├── SKILL.md                        # 入口（精简版：类型路由+评分+合规+懒加载）
 │   ├── iron-laws.md                    # 教练铁律（10 条）
 │   ├── hooks/                          # 钩子动作库（按类型拆分，懒加载）
 │   │   ├── goodthings.md               # 好物推荐类
@@ -55,7 +59,7 @@ redbook/
 │   │   ├── emotion.md                  # 情感共鸣类
 │   │   ├── store.md                    # 探店打卡类
 │   │   └── compare.md                  # 对比测评类
-│   ├── titles.md                       # 封面标题模板（5 种变体 + A/B 测试）
+│   ├── titles.md                       # 封面标题模板（7 种变体）
 │   └── templates.md                    # 正文结构模板（四段式 + 5 种内容类型）
 └── .gitignore
 ```
@@ -89,43 +93,22 @@ redbook/
 | 项 | 状态 |
 |----|------|
 | **🎯 产品定位** | **✅ 独立产品线** — 从 text-lens 分离（路径 A），教练模式 |
-| /redbook v1.0 | **✅ 已完成** — 含 6 项防御性改造 + 实测通过（3/3 内容类型） |
-| /redbook v1.7 | **✅ 已完成** — 精简提炼（DeepSeek 诊断）砍掉 80% Token |
-| /redbook v1.8 | **✅ 已完成** — 双模式入口（快速模式+教练模式分层）+ 文字版发布预览 |
-| /redbook v1.9 | **✅ 已完成** — P1 三项教练模式增强（渐进式Fact Sheet + 标题公式透明化 + 智能标签生成） |
-| /redbook v2.0 | **✅ 已完成** — P2 标题公式库扩充 + 数据文件治理（18→3 文件合并） |
-| /redbook v2.1 | **✅ 已完成** — P3 标注体验优化（首次展开警告+后续折叠为一行） |
-| /redbook v2.2 | **✅ 已完成** — 5 缺口修复（快速模式📌标注+深度优化价值+语域量化+合规提醒+fast_to_coach） |
-| /redbook v2.3 | **✅ 已完成** — 压力测试修复（13 项：数据路径+schema对齐+公式表+输入校验+合规增强） |
-| /redbook v2.4 | **✅ 已完成** — 精简增强（1025→607行，-41%）+ 情感类白描模式 + 人设路由 PRD V3.0 |
-| /redbook v1.6 | **✅ 已完成** — 标题自动优化 + 钩子自动匹配 + 情感白描 + 爆款扩充 |
-| /redbook v1.5 | **✅ 已完成** — 五维评分细则 + 语域校准 + 数据飞轮 |
-| /redbook v1.1 | **✅ 已完成** — 参数调优 + 50 条验证（可用率 92%，语域力 8.0） |
-| /redbook v1.2 | **✅ 已完成** — 基于 35 条真实反馈迭代（可用率 97.1%，完全可用率 48.6%） |
-| /redbook v1.3 | **✅ 已完成** — 7 项盲区修正 + 自审 + 压力测试 20/20 PASS |
-| /redbook v1.4 | **✅ 已完成** — 称呼自动识别+风格预设扩展+钩子自动匹配+标题优化建议 |
-| /redbook v1.5 | **✅ 已完成** — 智能称呼系统升级+去AI味引擎+去套路化引擎+爆款拆解引擎 |
-| Skill 入口 | [SKILL.md](.claude/skills/redbook/SKILL.md)（v1.7，670 行） |
-| 钩子库 | **✅ 合规版** — 5 类拆分文件，69 条钩子，16 处违规替换 |
-| 标题模板 | **✅ 5 种变体** — 含 A/B 测试指引 |
-| 正文模板 | **✅ 5 种类型** — 含事实/润色标注 |
-| 五维评分 | **✅ 完整版** — 档位 A/B/C/D + 维度间交互规则 |
-| 语域校准 | **✅ 已集成** — 量化指标（称呼密度/emoji密度/口语化比例） |
-| 数据飞轮 | **✅ 最小闭环** — feedback.jsonl + feedback-v1.1.jsonl + feedback-real.jsonl |
-| PM 诊断 | **✅ 已完成** — 报告已归档（docs/ 下已清理） |
-| 红队评审 | **✅ 已完成** — 报告已归档（docs/ 下已清理） |
-| 6 专家汇总 | **✅ 已完成** — [报告](docs/expert-review-6.md) |
-| V1.1 验证 | **✅ 已完成** — 50 条模拟测试，可用率 92%，语域力 8.0 |
-| 真实反馈收集 | **✅ 已完成** — 35 条真实用户数据，可用率 97.1% |
-| V1.2 迭代 | **✅ 已完成** — 4 项改进（情感关键对话/好物渠道必填/emoji密度/五感描写） |
-| V1.3 迭代 | **✅ 已完成** — 7 项盲区修正 + 自审 + 压力测试 20/20 PASS |
-| V1.4 迭代 | **✅ 已完成** — 称呼自动识别+风格预设扩展+钩子自动匹配+标题优化建议 |
-| V1.6 迭代 | **✅ 已完成** — 标题自动优化+钩子自动匹配+情感白描+爆款扩充+Fact Sheet 优化 |
-| V1.7 迭代 | **✅ 已完成** — 精简提炼（基于 DeepSeek 诊断，砍掉 80% Token） |
-| 竞品分析 | **✅ 已完成** — 6 专家架构拆解（UX/前端/内容/数据/视觉/合规） |
-| HANDOFF | **✅ 已完成** — [交接文档](HANDOFF.md)（v1.7 快照） |
+| **当前版本** | **V2.4** — SKILL.md 607行精简版（-41%），25/25 回归测试 PASS |
+| **全员评审** | **7.4/10** — PM 7.5 / DS 7.0 / Architect 7.0 / Legal 🟢 / QA 8.5 |
+| Skill 入口 | [SKILL.md](.claude/skills/redbook/SKILL.md)（V2.4，607行） |
+| 标题模板 | **✅ 7 种变体** — 数字/悬念/对比/痛点/身份/场景/疑问 |
+| 钩子库 | **✅ 合规版** — 5 类拆分文件，hooks/ 已通过 Legal 扫描 |
+| 五维评分 | **✅ 精简版** — 合格/不合格两档 + 维度间交互 |
+| 语域校准 | **✅ 精简版** — 口语化判定 + 3行风格规则 + reference/styles.md |
+| 合规系统 | **✅ 5层** — 红线词 + 跨语言 + 食品功效 + 品牌推广 + 医疗暗示 |
+| 数据飞轮 | **✅ V2.0** — feedback-production(96) + feedback-simulation(682) + viral-patterns(55) |
+| 情感类增强 | **✅ V2.4** — 白描模式 + 钩子降级 L2→L1 |
+| 人设路由 PRD | **✅ 已输出** — [V3.0 PRD](docs/persona-routing-prd-v3.md)（8种人设） |
+| HANDOFF | **✅ V2.4** — [交接文档](HANDOFF.md) |
+| Git | **⚠️ 本地已提交** — 无 GitHub remote，需创建后 push |
+| 数据收集 | **⚠️ 96 条** — 目标 100+，register_metrics 覆盖率 0% |
 
-**下一会话起点**：收集 ≥30 条真实反馈 → 同步到 text-lens 发布仓 → 数据文件治理
+**下一会话起点**：V3.0 P0 人设路由系统实现 → git push → 数据收集 100+
 
 ---
 
