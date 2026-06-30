@@ -1,8 +1,8 @@
 # HANDOFF — /redbook 小红书爆款助手
 
 > 最后更新：2026-06-30
-> **当前版本**：V3.1.0（P1 多信号融合增强）
-> **健康度**：V3.1 回归测试 57/57 PASS · 多信号融合 · 合规 🟢通过 · 108 条反馈
+> **当前版本**：V3.2.0（P2 路由仪表盘+自动调参+A/B测试）
+> **健康度**：V3.2 回归测试 67/67 PASS · 数据驱动闭环 · 合规 🟢通过 · 108 条反馈
 
 ---
 
@@ -10,13 +10,13 @@
 
 | 项 | 状态 | 说明 |
 |----|------|------|
-| **SKILL.md** | ✅ V3.1.0 | P1 多信号融合（5信号加权投票+Fact Sheet人设字段+内容语域分析+路由透明化） |
+| **SKILL.md** | ✅ V3.2.0 | P2 路由仪表盘+自动调参+A/B测试（数据驱动闭环） |
 | **reference/personas.md** | ✅ 新建 | 8 种人设语域规范（称呼/语气/emoji/句式/口头禅/角色扮演/分组） |
 | **情感类增强** | ✅ 已落地 | 白描模式 + 钩子降级 L2→L1 |
 | **数据采集** | ✅ 已落地 | register_metrics + fast_to_coach 铁律 |
-| **人设路由 PRD** | ✅ P0+P1 完成 | P0（8种人设+路由）+ P1（多信号融合+Fact Sheet增强+persona字段） |
-| **回归测试** | ✅ 已通过 | V3.0 25/25 + V3.0.2 6/6 + V3.0.3 6/6 + V3.0.4 5/5 + V3.1 15/15 = 57/57 PASS |
-| **Git** | ⚠️ 本地已提交 | 无 GitHub remote，需创建后 push |
+| **人设路由 PRD** | ✅ P0+P1+P2 完成 | P0（8种人设+路由）+ P1（多信号融合+Fact Sheet增强）+ P2（仪表盘+调参+AB测试） |
+| **回归测试** | ✅ 已通过 | V3.0 25/25 + V3.0.2 6/6 + V3.0.3 6/6 + V3.0.4 5/5 + V3.1 15/15 + V3.2 10/10 = 67/67 PASS |
+| **Git** | ✅ 已推送 | GitHub remote: dcctc5kf7z-byte/redbook |
 | **数据** | ✅ 108 条 | feedback-production.jsonl，register_metrics 100% |
 
 ---
@@ -35,6 +35,7 @@
 | v3.0.3 | — | 六维评审深度修复（黑名单30词+结构化路由+事实门槛+合规三区域+lecturer交互） |
 | v3.0.4 | — | 五维评审精修（保留型策略+标签映射+信息熵检测+合规审计日志+效果预览） |
 | v3.1.0 | — | P1 多信号融合（5信号加权投票+Fact Sheet人设字段+语域分析+路由透明化+准确率验证） |
+| v3.2.0 | — | P2 路由仪表盘+自动调参+A/B测试（数据驱动闭环） |
 
 ---
 
@@ -51,13 +52,12 @@ git remote add origin https://github.com/dcctc5kf7z-byte/redbook.git
 git push -u origin master
 ```
 
-### 优先级 2：V3.0 P2 — 路由仪表盘 + 自动调参
+### 优先级 2：V3.0 P2 — 已完成 ✅
 
-从 V3.1.0 出发，实现 P2：
-
-1. **路由仪表盘**：基于 routing-log.jsonl 聚合各人设使用分布、准确率趋势
-2. **自动调参**：基于 feedback 数据自动调整信号权重
-3. **A/B 测试框架**：同一输入多 persona 生成对比
+V3.2.0 已实现：
+1. **路由仪表盘**：基于 routing-log.jsonl 聚合各人设使用分布、信号贡献、冲突率、准确率代理
+2. **自动调参**：4 条触发规则 + tuning-log.jsonl + 保护性边界 + 熔断机制
+3. **A/B 测试框架**：同组对比 + 跨组指定 + 用户选择记录
 
 ### 优先级 3：数据收集
 
@@ -71,10 +71,11 @@ git push -u origin master
 
 | 文件 | 说明 |
 |------|------|
-| `.claude/skills/redbook/SKILL.md` | ★ 主产品入口（V3.1.0，多信号融合版） |
+| `.claude/skills/redbook/SKILL.md` | ★ 主产品入口（V3.2.0，数据驱动闭环版） |
 | `.claude/skills/redbook/reference/personas.md` | ★ V3.0 新增 — 8种人设语域规范+路由规则 |
 | `docs/persona-routing-prd-v3.md` | V3.0 人设路由 PRD（8种人设+路由规则） |
-| `docs/v3.1-regression-tests.md` | ★ V3.1 回归测试（57条） |
+| `docs/v3.1-regression-tests.md` | V3.1 回归测试（57条） |
+| `docs/v3.2-regression-tests.md` | ★ V3.2 回归测试（67条） |
 | `data/feedback-production.jsonl` | 真实反馈（108条，schema_version 2.3） |
 | `data/feedback-simulation.jsonl` | 模拟反馈（682条） |
 | `data/viral-patterns.jsonl` | 爆款特征（55条） |
@@ -105,13 +106,14 @@ git push -u origin master
 - [x] V3.0 回归测试：25/25 PASS（100%），零功能损失
 - [x] V3.0.2 六维评审修复：6 项结构性加固（架构/数据/产品/交互/路由/合规）
 - [x] 数据收集：108 条（96+12），register_metrics 100%，fast_to_coach 100%
-- [ ] Git push：创建 redbook GitHub remote
+- [x] Git push：创建 redbook GitHub remote（dcctc5kf7z-byte/redbook）
 - [x] V3.0.2 回归测试：31/31 PASS（6 项修复 + 25 条基线），零功能损失
 - [x] V3.0.3 六维评审深度修复：6 项盲区修补（黑名单30词+结构化路由+事实门槛+合规三区域+lecturer交互）
 - [x] V3.0.4 五维评审精修：5 项盲区微调（保留型策略+标签映射+信息熵检测+合规审计日志+效果预览）
 - [x] V3.1.0 P1 多信号融合增强：5 信号加权投票 + Fact Sheet 人设字段 + 语域分析 + 路由透明化
 - [x] V3.1 回归测试：57/57 PASS（15 条新增 + 42 条基线），零功能损失
-- [ ] V3.0 P2：路由仪表盘 + 自动调参 + A/B 测试
+- [x] V3.2.0 P2 路由仪表盘+自动调参+A/B测试：数据驱动闭环
+- [x] V3.2 回归测试：67/67 PASS（10 条新增 + 57 条基线），零功能损失
 
 ---
 
@@ -130,3 +132,4 @@ git push -u origin master
 | 2026-06-30 | V3.0.3 六维评审深度修复 | V3.0.2二次评审→6项盲区修补（黑名单12→30词+结构化路由+主动日志+事实门槛+合规三区域+lecturer交互） |
 | 2026-06-30 | V3.0.4 五维评审精修 | V3.0.3三次评审→5项盲区微调（保留型策略+标签映射替代+信息熵检测+合规审计日志+效果预览） |
 | 2026-06-30 | V3.1.0 P1 多信号融合 | PRD P1→路由从优先链升级为5信号加权投票+Fact Sheet人设发现字段+内容语域分析+路由透明化 |
+| 2026-06-30 | V3.2.0 P2 数据驱动闭环 | PRD P2→路由仪表盘(6维度)+自动调参(4规则+熔断)+A/B测试(同组对比)+日志基础设施自动创建 |
