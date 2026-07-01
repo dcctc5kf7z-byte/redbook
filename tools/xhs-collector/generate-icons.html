@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head><title>Generate Icons</title></head>
+<body>
+<canvas id="c"></canvas>
+<script>
+// 生成扩展图标（16x16, 48x48, 128x128）
+// 打开此页面后右键 canvas → 另存为图片
+[16, 48, 128].forEach(size => {
+  const c = document.getElementById('c');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+
+  // 红色圆形背景
+  ctx.beginPath();
+  ctx.arc(size/2, size/2, size/2 - 1, 0, Math.PI * 2);
+  ctx.fillStyle = '#ff2442';
+  ctx.fill();
+
+  // 白色书本图标
+  ctx.fillStyle = 'white';
+  ctx.font = `bold ${Math.round(size * 0.5)}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('📕', size/2, size/2);
+
+  // 下载
+  const a = document.createElement('a');
+  a.download = `icon${size}.png`;
+  a.href = c.toDataURL();
+  a.click();
+});
+</script>
+<p>图标已自动下载。将 icon16.png / icon48.png / icon128.png 放入 icons/ 目录。</p>
+</body>
+</html>

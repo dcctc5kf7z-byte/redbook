@@ -1,9 +1,9 @@
 # CLAUDE.md — 小红书爆款助手 · 项目导航
 
 > 最后更新：2026-07-01
-> **当前阶段**：v3.3.0 拆解模式+挖掘模式 — 从"帮你写"升级为"教你写"（拆解爆款+挖掘选题+三模式分流）
+> **当前阶段**：v3.3.0 拆解模式+挖掘模式 + 数据基础设施（Chrome 采集扩展+数据回流铁律+手动采集模板）
 > **上一阶段**：v3.2.0 P2 路由仪表盘+自动调参+A/B测试（数据驱动闭环）
-> **下一会话起点**：V3.3 测试 → 回归验证 → 上线
+> **下一会话起点**：数据飞轮启动（手动 TOP 20 采集 + Chrome 扩展测试 + 回流话术验证）
 
 ---
 
@@ -24,7 +24,7 @@
 | 仓库 | `Desktop/one` | `Desktop/redbook`（本项目） |
 | 哲学 | 反射，不引导 | 帮你写出平台友好的内容 |
 | 入口 | `/text-lens` | `/redbook` |
-| 铁律 | 10 条（不评价、不替写） | 10 条（给方案、给理由、合规红线） |
+| 铁律 | 10 条（不评价、不替写） | 12 条（含 #12 数据回流铁律） |
 | 事实来源 | 不涉及 | 必须来自 Fact Sheet |
 
 ---
@@ -38,9 +38,9 @@ redbook/
 ├── devlog/                             # 开发者日志
 │   ├── 2026-06-29.md                   # 首日日志
 │   ├── 2026-06-30.md                   # V1.8→V3.0.4 全线迭代
-│   └── 2026-07-01.md                   # V3.3.0 拆解模式+挖掘模式
+│   └── 2026-07-01.md                   # V3.3.0 拆解模式+挖掘模式 + 数据基础设施
 ├── data/                               # 反馈数据（V2.0 治理后）
-│   ├── feedback-production.jsonl       # ★ 真实反馈（108条，schema_version 2.2）
+│   ├── feedback-production.jsonl       # ★ 真实反馈（108条，schema_version 2.3）
 │   ├── feedback-simulation.jsonl       # 模拟反馈（682条）
 │   ├── viral-patterns.jsonl            # 爆款特征（55条）
 │   ├── README.md                       # 数据文档
@@ -55,12 +55,13 @@ redbook/
 │   ├── v3.0.4-regression-tests.md      # V3.0.4 回归测试（42条）
 │   ├── v3.1-regression-tests.md        # V3.1 回归测试（57条）
 │   ├── v3.2-regression-tests.md        # ★ V3.2 回归测试（67条）
+│   ├── v3.3-regression-tests.md        # ★ V3.3 回归测试（87条，含拆解+挖掘+冲突+基线）
 │   ├── v3.3-design-analysis-mining.md  # ★ V3.3 设计稿（拆解模式+挖掘模式，全员自审后修复）
 │   ├── recruitment-post.md             # 朋友圈招募文案
 │   └── xiaohongshu-experience-post.md  # 小红书体验帖模板
 ├── .claude/skills/redbook/             # ★ /redbook Skill（V3.3.0，拆解+挖掘+写作三模式）
 │   ├── SKILL.md                        # 入口（模式路由+人设路由+评分+合规+懒加载）
-│   ├── iron-laws.md                    # 教练铁律（10 条）
+│   ├── iron-laws.md                    # 教练铁律（12 条，含 #12 数据回流）
 │   ├── analysis.md                     # ★ V3.3 新增 — 拆解模式（7维度+量化+数据飞轮回写）
 │   ├── mining.md                       # ★ V3.3 新增 — 挖掘模式（精简提问+5角度选题+一周排期）
 │   ├── hooks/                          # 钩子动作库（按类型拆分，懒加载）
@@ -73,6 +74,16 @@ redbook/
 │   ├── templates.md                    # 正文结构模板（四段式 + 5 种内容类型）
 │   └── reference/
 │       └── personas.md                 # ★ V3.0 新增 — 8种人设语域规范+路由规则
+├── tools/                              # ★ 数据工具（V3.3 新增）
+│   ├── xhs-collector/                  # Chrome 采集扩展（V1.0.1，Manifest V3）
+│   │   ├── manifest.json               # 扩展配置（scripting 权限 + host_permissions）
+│   │   ├── content.js                  # 内容脚本（DOM 提取 + 多选择器回退）
+│   │   ├── popup.js                    # 弹窗逻辑（单篇/批量/导出 + 自动注入重试）
+│   │   ├── popup.html                  # 弹窗 UI
+│   │   ├── styles.css                  # 样式（小红书红 #ff2442）
+│   │   ├── icons/                      # 扩展图标（16/48/128px）
+│   │   └── README.md                   # 安装使用说明
+│   └── manual-collection-template.md   # 手动采集模板（5类×20行，含基准线公式）
 └── .gitignore
 ```
 
@@ -118,7 +129,7 @@ redbook/
 | 情感类增强 | **✅ V2.4** — 白描模式 + 钩子降级 L2→L1 |
 | 人设路由 | **✅ V3.2 P0+P1+P2** — [PRD](docs/persona-routing-prd-v3.md) + [规范](.claude/skills/redbook/reference/personas.md) |
 | HANDOFF | **✅ V3.3.0** — [交接文档](HANDOFF.md) |
-| 回归测试 | **✅ V3.2 基线** — 67/67 PASS（100%），V3.3 回归待执行 |
+| 回归测试 | **✅ V3.3 全量** — 87/87 PASS（100%），含拆解10+挖掘7+冲突3+基线67 |
 | Git | **✅ 已推送** — commit `47c3248`，GitHub remote: dcctc5kf7z-byte/redbook |
 | 数据收集 | **✅ 108 条** — 96+12，register_metrics 覆盖率 100% |
 | 去AI味系统 | **✅ V3.0.4** — 30词黑名单（删除型/改写型/保留型三层策略）+ 角色扮演软约束 |
@@ -127,8 +138,11 @@ redbook/
 | 拆解模式 | **✅ V3.3.0** — 7维度拆解 + 量化数据 + 数据飞轮回写 + 快速/标准/深度三档 |
 | 挖掘模式 | **✅ V3.3.0** — 精简提问2问 + 跳过选项 + 5角度选题方案 + 一周排期 |
 | 模式路由 | **✅ V3.3.0** — 三模式分流（写作/拆解/挖掘）+ 双重条件触发 + 模式退出机制 |
+| 数据回流 | **✅ V3.3** — iron-laws #12 + SKILL.md 数据回流机制（基准线+回流话术+Chrome 扩展） |
+| Chrome 采集扩展 | **✅ V1.0.1** — `tools/xhs-collector/`（Manifest V3，单篇/批量采集，JSONL 导出，自动注入重试） |
+| 手动采集模板 | **✅ V3.3** — `tools/manual-collection-template.md`（5类×20行，含基准线公式+JSONL 转换） |
 
-**下一会话起点**：V3.3 测试 → 回归验证 → 上线
+**下一会话起点**：数据飞轮启动（手动 TOP 20 采集 + Chrome 扩展测试 + 回流话术验证）
 
 ---
 
@@ -138,13 +152,16 @@ redbook/
 version: v3.3.0
 date: 2026-07-01
 changes:
-  - [V3.3.0] 拆解模式+挖掘模式 — 从"帮你写"升级为"教你写"
+  - [V3.3.0] 拆解模式+挖掘模式 + 数据基础设施 — 从"帮你写"升级为"教你写"，启动数据飞轮
     - 拆解模式：新增 analysis.md（7维度拆解 + 量化数据 + 数据飞轮回写 + 快速/标准/深度三档）
     - 挖掘模式：新增 mining.md（精简提问2问 + 跳过选项 + 5角度选题方案 + 一周排期）
     - 模式路由：新增三模式分流（写作/拆解/挖掘）+ 双重条件触发 + 模式退出机制
     - 触发词：新增 5 个触发词（帮我拆解/分析一下这篇/为什么能爆/帮我想几个选题/不知道写什么）
     - 懒加载：新增 analysis.md 和 mining.md 的按需加载规则
     - 全员自审：12项修复（模式检测精度/量化/数据飞轮/提问精简/合规/测试用例等）
+    - 数据回流铁律：新增 iron-laws #12 + SKILL.md 数据回流机制（基准线+回流话术）
+    - Chrome 采集扩展：新增 tools/xhs-collector/（Manifest V3，单篇/批量，JSONL 导出）
+    - 手动采集模板：新增 tools/manual-collection-template.md（5类×20行，含基准线公式）
   - [V3.2.0] P2 路由仪表盘+自动调参+A/B测试 — 数据驱动闭环
     - 仪表盘：6维度分析（人设分布/信号贡献/冲突率/兜底率/准确率代理/置信度分布）
     - 自动调参：4条触发规则 + tuning-log.jsonl + 保护性边界 + 熔断机制

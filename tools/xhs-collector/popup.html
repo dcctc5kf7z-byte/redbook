@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小红书笔记复制</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">📕 小红书笔记复制</div>
+      <div class="subtitle">逐篇手动复制</div>
+    </header>
+
+    <div id="status" class="status status--idle">
+      <span class="status__icon">●</span>
+      <span class="status__text">等待操作</span>
+    </div>
+
+    <div class="actions">
+      <button id="btnExtract" class="btn btn--primary" disabled>
+        📄 复制当前笔记
+      </button>
+    </div>
+
+    <div id="preview" class="preview hidden">
+      <div class="preview__header">
+        <span>📋 已复制</span>
+        <span id="previewCount" class="preview__count">0 条</span>
+      </div>
+      <div id="previewContent" class="preview__content"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="btnCopy" class="btn btn--small" disabled>
+        📋 复制到剪贴板
+      </button>
+      <button id="btnClear" class="btn btn--small btn--danger">
+        🗑️ 清空
+      </button>
+    </div>
+
+    <details class="help">
+      <summary>📖 使用说明</summary>
+      <div class="help__content">
+        <p>1. 在浏览器中打开一篇小红书笔记</p>
+        <p>2. 点击「复制当前笔记」</p>
+        <p>3. 重复以上步骤，逐篇复制</p>
+        <p>4. 点击「复制到剪贴板」获取所有数据</p>
+        <p>5. 粘贴到文本文件，保存为 <code>.jsonl</code></p>
+        <p><strong>⚠️</strong> 仅读取页面上可见的文本，无网络拦截，无自动化</p>
+      </div>
+    </details>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

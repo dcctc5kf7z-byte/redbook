@@ -1,0 +1,310 @@
+/* ============================================================
+   小红书笔记采集器 — 弹窗样式
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 360px;
+  min-height: 480px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  color: #333;
+  background: #fafafa;
+}
+
+.container {
+  padding: 12px;
+}
+
+/* ---- 头部 ---- */
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff2442;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #999;
+}
+
+/* ---- 状态栏 ---- */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.status--idle {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.status--loading {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.status--success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status--warn {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.status--error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status__icon {
+  font-size: 8px;
+}
+
+/* ---- 按钮 ---- */
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex: 1;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: #ff2442;
+  color: white;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #e61e3a;
+}
+
+.btn--secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: #eee;
+}
+
+.btn--small {
+  padding: 6px 10px;
+  font-size: 11px;
+  flex: 1;
+}
+
+.btn--danger {
+  background: #fff5f5;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: #ffebee;
+}
+
+/* ---- 预览 ---- */
+.preview {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.preview.hidden {
+  display: none;
+}
+
+.preview__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.preview__count {
+  font-size: 11px;
+  color: #999;
+  font-weight: 400;
+}
+
+.preview__content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.preview__item {
+  padding: 8px 10px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.preview__item:last-child {
+  border-bottom: none;
+}
+
+.preview__title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.preview__meta {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  color: #888;
+}
+
+.preview__type {
+  background: #f0f0f0;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  color: #666;
+}
+
+/* ---- 工具栏 ---- */
+.toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* ---- 统计 ---- */
+.stats {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.stat {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.stat:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.stat:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.stat__value {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff2442;
+}
+
+.stat__label {
+  display: block;
+  font-size: 10px;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* ---- 帮助 ---- */
+.help {
+  font-size: 11px;
+  color: #666;
+}
+
+.help summary {
+  cursor: pointer;
+  padding: 6px 0;
+  color: #999;
+  font-size: 11px;
+}
+
+.help summary:hover {
+  color: #666;
+}
+
+.help__content {
+  padding: 8px 10px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+
+.help__content p {
+  margin-bottom: 4px;
+}
+
+.help__content code {
+  background: #eee;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+/* ---- 滚动条 ---- */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bbb;
+}
