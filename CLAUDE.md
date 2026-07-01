@@ -34,10 +34,11 @@
 ```
 redbook/
 ├── CLAUDE.md                           # ← 你在这里
-├── HANDOFF.md                          # ★ 项目交接文档（V3.0.4 快照）
+├── HANDOFF.md                          # ★ 项目交接文档（V3.3.0 快照）
 ├── devlog/                             # 开发者日志
 │   ├── 2026-06-29.md                   # 首日日志
-│   └── 2026-06-30.md                   # V1.8→V3.0.4 全线迭代
+│   ├── 2026-06-30.md                   # V1.8→V3.0.4 全线迭代
+│   └── 2026-07-01.md                   # V3.3.0 拆解模式+挖掘模式
 ├── data/                               # 反馈数据（V2.0 治理后）
 │   ├── feedback-production.jsonl       # ★ 真实反馈（108条，schema_version 2.2）
 │   ├── feedback-simulation.jsonl       # 模拟反馈（682条）
@@ -105,8 +106,8 @@ redbook/
 |----|------|
 | **🎯 产品定位** | **✅ 独立产品线** — 从 text-lens 分离（路径 A），教练模式 |
 | **当前版本** | **V3.3.0** — 拆解模式+挖掘模式（从"帮你写"升级为"教你写"） |
-| **全员评审** | **7.4/10** — PM 7.5 / DS 7.0 / Architect 7.0 / Legal 🟢 / QA 8.5 |
-| Skill 入口 | [SKILL.md](.claude/skills/redbook/SKILL.md)（V3.2.0，数据驱动闭环版） |
+| **全员评审** | **V3.3 设计评审 7.3/10** — PM 7.5 / DS 7.0 / Architect 7.0 / UX 7.0 / Legal 🟢 / QA 8.5（12项修复已落地） |
+| Skill 入口 | [SKILL.md](.claude/skills/redbook/SKILL.md)（V3.3.0，拆解+挖掘+写作三模式版） |
 | 人设规范 | **✅ V3.0 新增** — [reference/personas.md](.claude/skills/redbook/reference/personas.md)（8种人设语域规范） |
 | 标题模板 | **✅ 7 种变体** — 数字/悬念/对比/痛点/身份/场景/疑问 |
 | 钩子库 | **✅ 合规版** — 5 类拆分文件，hooks/ 已通过 Legal 扫描 |
@@ -116,9 +117,9 @@ redbook/
 | 数据飞轮 | **✅ V2.2** — feedback-production(108) + feedback-simulation(682) + viral-patterns(55) + routing-log + compliance-log |
 | 情感类增强 | **✅ V2.4** — 白描模式 + 钩子降级 L2→L1 |
 | 人设路由 | **✅ V3.2 P0+P1+P2** — [PRD](docs/persona-routing-prd-v3.md) + [规范](.claude/skills/redbook/reference/personas.md) |
-| HANDOFF | **✅ V3.2.0** — [交接文档](HANDOFF.md) |
-| 回归测试 | **✅ V3.2.0** — 67/67 PASS（100%），零功能损失 |
-| Git | **✅ 已推送** — GitHub remote: dcctc5kf7z-byte/redbook |
+| HANDOFF | **✅ V3.3.0** — [交接文档](HANDOFF.md) |
+| 回归测试 | **✅ V3.2 基线** — 67/67 PASS（100%），V3.3 回归待执行 |
+| Git | **✅ 已推送** — commit `47c3248`，GitHub remote: dcctc5kf7z-byte/redbook |
 | 数据收集 | **✅ 108 条** — 96+12，register_metrics 覆盖率 100% |
 | 去AI味系统 | **✅ V3.0.4** — 30词黑名单（删除型/改写型/保留型三层策略）+ 角色扮演软约束 |
 | 路由系统 | **✅ V3.2.0** — 8种人设 + 5信号加权投票 + 路由仪表盘 + 自动调参 + A/B测试 + 日志基础设施 |
